@@ -40,3 +40,9 @@ class FollowersCount(models.Model):
 
     def __str__(self):
         return self.user
+
+
+
+
+class commentsdb(models.Model):
+    comment = models.CharField(max_length=300, null=True, blank=True)

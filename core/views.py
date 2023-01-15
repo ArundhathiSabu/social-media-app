@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post, LikePost, FollowersCount
+from .models import Profile, Post, LikePost, FollowersCount, commentsdb
 from itertools import chain
 import random
 
@@ -11,6 +11,7 @@ import random
 
 @login_required(login_url='signin')
 def index(request):
+    data = commentsdb.objects.all()
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
 
@@ -54,7 +55,7 @@ def index(request):
     suggestions_username_profile_list = list(chain(*username_profile_list))
 
 
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4]})
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4], 'data':data})
 
 @login_required(login_url='signin')
 def upload(request):
@@ -245,3 +246,18 @@ def signin(request):
 def logout(request):
     auth.logout(request)
     return redirect('signin')
+
+def mydata(request, dataid):
+    user_profile = Post.objects.get(user=request.user)
+    return render("setting.html", {'user_profile':user_profile})
+
+def commentsave(req):
+    com = req.POST.get('comment')
+    obj = commentsdb(comment= com)
+    obj.save()
+    return redirect('index')
+
+def deletecomment(req, dataid):
+    data = commentsdb.objects.filter(id=dataid)
+    data.delete()
+    return redirect('index')

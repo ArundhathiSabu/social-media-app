@@ -12,4 +12,9 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('logout', views.logout, name='logout'),
+    path('mydata', views.mydata, name="mydata"),
+    path('commentsave', views.commentsave, name="commentsave"),
+    path('deletecomment/<int:dataid>', views.deletecomment, name="deletecomment")
 ]
+
+# {% url 'profile' request.user.id %}

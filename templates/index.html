@@ -11,6 +11,10 @@
     <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
@@ -46,11 +50,16 @@
                     </form>
                     <div class="right-side lg:pr-4">
                          <!-- upload -->
-                        <a href="#"
+                        <a href="{% url 'settings' %}"
                             class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
                             <ion-icon name="add-circle" class="-mb-1
-                             mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload Pics
+                             mr-1 opacity-90 text-xl uilus-circle"></ion-icon> My Profile
                         </a>
+                        <a href="{% url 'settings' %}"
+                        class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
+                        <ion-icon name="add-circle" class="-mb-1
+                         mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload Pics
+                    </a>
                          <!-- upload dropdown box -->
                         <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
     
@@ -271,8 +280,9 @@
                                             <p>Liked by {{post.no_of_likes}} people</p>
                                             {% endif %}
                                         </div>
-                                        
+                                    
                                     </a>
+                                   
                                     <!-- <a href="#" class="flex items-center space-x-2">
                                         <div class="p-2 rounded-full text-black">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
@@ -300,6 +310,38 @@
                                 <p>
                                     <a href="/profile/{{post.user}}"><strong>{{post.user}}</strong></a> {{post.caption}}
                                 </p>
+
+
+                                <form method="post" action="{% url 'commentsave' %}">
+                                    {% csrf_token %}
+                                <input type="text" placeholder="Comment" name="comment"> 
+                                <button type="submit" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 ">Add Your Comment</button>
+                                </form>
+
+
+
+                               
+
+                                <table>
+                                {% for d in data %}
+                                <tr>
+                                    <td>{{d.comment}}</td>
+                                    <td >
+                                        <label style="color:white">..........................</label>
+                                    </td>
+                                    
+                                    <td>
+                                        <form action="{% url 'deletecomment' dataid=d.id%}">
+                                            <button type="submit" class="fa fa-trash"></button>
+                                        </form>
+                                    </td>    
+                                </tr>
+                               
+                                {% endfor %}
+                                </table>
+
+
+
 
                                 <!-- <div class="border-t pt-4 space-y-4 ">
                                     <div class="flex">
